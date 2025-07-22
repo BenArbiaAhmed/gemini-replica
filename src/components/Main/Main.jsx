@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import './Main.css'
 import {assets} from "../../assets/assets.js";
 import Context from "../../context/Context.jsx";
+import {ClipLoader} from "react-spinners";
 
 
 const Main = () => {
@@ -40,20 +41,27 @@ const Main = () => {
                         </div>
                     </>:
                     <div className="result">
-                        <div className="result-title">
-                            <img src={assets.user_icon} alt=""/>
-                            <p>{recentPrompt}</p>
-                        </div>
+                        {/*<div className="result-title">*/}
+                        {/*    <img src={assets.user_icon} alt=""/>*/}
+                        {/*    <p>{recentPrompt}</p>*/}
+                        {/*</div>*/}
                         <div className="result-data">
-                            <img src={assets.gemini_icon} alt=""/>
-                            {loading ?
-                                <div className="loader">
-                                    <hr/>
-                                    <hr/>
-                                    <hr/>
-                                </div>
 
-                            : <p dangerouslySetInnerHTML={{__html:resultData}}></p>
+                            {loading ?
+                                <>
+                                    <ClipLoader
+                                        loading={loading}
+                                        size={30}
+                                        aria-label="Loading Spinner"
+                                        data-testid="loader"
+                                    />
+                                    <p>Just a sec ...</p>
+                                </>
+
+                            :<>
+                                    <img src={assets.gemini_real_icon} alt=""/>
+                                    <p dangerouslySetInnerHTML={{__html:resultData}}></p>
+                                </>
                             }
                         </div>
                     </div>
@@ -61,11 +69,24 @@ const Main = () => {
 
                 <div className="main-bottom">
                     <div className="search-box">
-                        <input onChange={(e) => setInput(e.target.value)} value={input} type="text"  placeholder="Enter prompt here" />
+                        <input
+                            onChange={(e) => setInput(e.target.value)}
+                            value={input}
+                            type="text"
+                            placeholder="Ask Gemini"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter")
+                                    onSent();
+                            }}
+                        />
                         <div>
                             <img src={assets.gallery_icon} alt=""/>
                             <img src={assets.mic_icon} alt=""/>
-                            <img onClick={() => onSent()} src={assets.send_icon} alt=""/>
+                            <img
+                                onClick={() => onSent()}
+                                src={assets.send_icon}
+                                alt=""
+                            />
                         </div>
                     </div>
                     <p className="bottom-info">
