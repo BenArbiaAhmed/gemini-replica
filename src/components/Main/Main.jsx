@@ -6,7 +6,7 @@ import {ClipLoader} from "react-spinners";
 
 
 const Main = () => {
-    const {onSent, recentPrompt, showResult, loading, resultData, setInput, input} = useContext(Context);
+    const {onSent, showResult, loading, resultData, setInput, input} = useContext(Context);
     return (
         <div className="main">
             <div className="nav">
@@ -41,15 +41,12 @@ const Main = () => {
                         </div>
                     </>:
                     <div className="result">
-                        {/*<div className="result-title">*/}
-                        {/*    <img src={assets.user_icon} alt=""/>*/}
-                        {/*    <p>{recentPrompt}</p>*/}
-                        {/*</div>*/}
                         <div className="result-data">
 
                             {loading ?
                                 <>
                                     <ClipLoader
+                                        color={"#3186ff"}
                                         loading={loading}
                                         size={30}
                                         aria-label="Loading Spinner"
@@ -82,11 +79,11 @@ const Main = () => {
                         <div>
                             <img src={assets.gallery_icon} alt=""/>
                             <img src={assets.mic_icon} alt=""/>
-                            <img
+                            {input? <img
                                 onClick={() => onSent()}
                                 src={assets.send_icon}
                                 alt=""
-                            />
+                            />:null}
                         </div>
                     </div>
                     <p className="bottom-info">
