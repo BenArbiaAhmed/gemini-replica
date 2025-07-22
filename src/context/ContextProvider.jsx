@@ -17,15 +17,24 @@ const ContextProvider = (props) => {
         }, 75*index)
     }
 
-    const onSent = async () => {
+    const onSent = async (prompt) => {
         setInput("")
         setResultData("")
         setLoading(true)
         setShowResult(true)
-        setRecentPrompt(input)
-        const response = await main(input)
+        let response;
+        if(prompt !== undefined) {
+            response = await main(prompt);
+            setResultData(prompt);
+
+        }
+        else{
+            setPrevPrompts(prev=>[...prev, input])
+            setRecentPrompt(input)
+            response = await main(input);
+        }
         let responseArray = response.split("**")
-        let newResponse;
+        let newResponse = "";
         for(let i = 0; i < responseArray.length; i++) {
             if(i === 0 || i%2 !==1){
                 newResponse += responseArray[i]
@@ -37,7 +46,6 @@ const ContextProvider = (props) => {
         let newResponse2 = newResponse
             .split("*")
             .join("</br>")
-            .replace(/undefined/g, "");
         let newResponseArray = newResponse2.split(" ")
         for(let i = 0; i < newResponseArray.length; i++) {
             const nextWord = newResponseArray[i]
